@@ -233,3 +233,4 @@ def analyze_map(grafo: Grafo,
 
 
 
+

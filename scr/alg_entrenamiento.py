@@ -142,3 +142,4 @@ def entrenar_gato(conexiones, episodios=400, semillas=(0,1,2,3), eps_vals=(0.0,0
             mejor = {"eps":eps, "tasa_captura":tasa_cap, "pasos_prom":st.mean(pasos_list), "d_prom":st.mean(d_list)}
     return mejor
 
+
