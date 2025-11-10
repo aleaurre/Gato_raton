@@ -1,9 +1,8 @@
 import pygame
 import sys
 
-# -----------------------------------------
-# CONFIGURACIÓN
-# -----------------------------------------
+
+# Configuración
 pygame.init()
 ANCHO, ALTO = 900, 600
 VENTANA = pygame.display.set_mode((ANCHO, ALTO))
@@ -11,7 +10,6 @@ pygame.display.set_caption("Gato y Ratón – Tablero 11 nodos con queso y meta 
 
 FPS = 60
 RELOJ = pygame.time.Clock()
-
 COLOR_FONDO = (245, 240, 230)
 COLOR_LINEAS = (40, 40, 40)
 COLOR_NODO = (180, 180, 180)
@@ -19,21 +17,18 @@ COLOR_INICIO = (120, 220, 120)
 COLOR_FINAL = (250, 150, 150)
 FUENTE = pygame.font.SysFont("arial", 22)
 
-# -----------------------------------------
-# IMÁGENES
-# -----------------------------------------
-img_gato = pygame.image.load("Z/gato.png")
-img_raton = pygame.image.load("Z/ratón.png")
-img_queso = pygame.image.load("Z/queso.png")
+# Imágenes
+img_gato = pygame.image.load("gato.png")
+img_raton = pygame.image.load("ratón.png")
+img_queso = pygame.image.load("queso.png")
 
 ESCALA = 0.15
 img_gato = pygame.transform.smoothscale(img_gato, (int(250*ESCALA), int(250*ESCALA)))
 img_raton = pygame.transform.smoothscale(img_raton, (int(250*ESCALA), int(250*ESCALA)))
 img_queso = pygame.transform.smoothscale(img_queso, (int(200*ESCALA), int(200*ESCALA)))
 
-# -----------------------------------------
-# TABLERO 11 NODOS (rejilla + alas)
-# -----------------------------------------
+
+# Tablero
 x0, y_mid = 150, 300
 dx, dy = 100, 100
 
@@ -64,12 +59,10 @@ conexiones = {
     9: [5, 6, 8, 10],
     10: [7, 8, 9],
 }
-
 aristas = {tuple(sorted((i, j))) for i, vs in conexiones.items() for j in vs}
 
-# -----------------------------------------
-# ESTADO DEL JUEGO
-# -----------------------------------------
+
+# Estados del Juego
 pos_gato = 1      # Gato empieza arriba izq
 pos_raton = 0     # Ratón empieza en el ala izq
 inicio = 0        # Nodo de inicio del ratón
@@ -80,9 +73,8 @@ turno = "raton"
 game_over = False
 victoria = False
 
-# -----------------------------------------
-# FUNCIONES
-# -----------------------------------------
+
+# Funciones
 def dibujar_tablero():
     """Dibuja el grafo con el queso visible y la meta oculta hasta tener el queso."""
     VENTANA.fill(COLOR_FONDO)

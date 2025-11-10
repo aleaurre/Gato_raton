@@ -15,15 +15,12 @@ from typing import Dict, List, Tuple, Set, Any
 
 
 # Types a usar
-
 Nodo = int
 Grafo = Dict[Nodo, List[Nodo]]
 PosDict = Dict[Nodo, Tuple[int, int]]
 
 
 # Funciones básicas grafo
-
-
 def bfs_shortest_path(grafo: Grafo, origen: Nodo, destino: Nodo) -> Tuple[List[Nodo], int]:
     """
     Esta función es:BFS que devuelve el camino más corto (lista de nodos) entre origen y destino
@@ -151,8 +148,6 @@ def articulation_points(grafo: Grafo) -> Set[Nodo]:
 
 
 # Centralidad simple (grado: numero de vecinos)
-
-
 def degree_centrality(grafo: Grafo) -> Dict[Nodo, int]:
     """
     Calcula la centralidad por grado (num de vecinos).
@@ -163,8 +158,6 @@ def degree_centrality(grafo: Grafo) -> Dict[Nodo, int]:
 
 
 # FUNCIÓN DE ANÁLISIS GLOBAL ( incorpora todo )
-
-
 def analyze_map(grafo: Grafo,
                 nodos_pos: PosDict,
                 pos_gato: Nodo,
