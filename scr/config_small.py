@@ -135,4 +135,5 @@ def cartel(texto, color=(255, 200, 200)):
     VENTANA.blit(render, (ANCHO//2 - render.get_width()//2, ALTO//2))
     pygame.display.flip()
     pygame.time.wait(2000)
+    
 
