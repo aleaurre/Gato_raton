@@ -18,9 +18,9 @@ COLOR_FINAL = (250, 150, 150)
 FUENTE = pygame.font.SysFont("arial", 22)
 
 # Imágenes
-img_gato = pygame.image.load("gato.png")
-img_raton = pygame.image.load("ratón.png")
-img_queso = pygame.image.load("queso.png")
+img_gato = pygame.image.load("./assets/gato.png")
+img_raton = pygame.image.load("./assets/ratón.png")
+img_queso = pygame.image.load("./assets/queso.png")
 
 ESCALA = 0.15
 img_gato = pygame.transform.smoothscale(img_gato, (int(250*ESCALA), int(250*ESCALA)))
