@@ -1,3 +1,4 @@
+# Evita commitear los entornos virtuales para evitar problemas de sincronización
 .ven
 .venv
 venv/
