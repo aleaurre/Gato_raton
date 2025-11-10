@@ -105,7 +105,7 @@ def dibujar_piezas():
 
 
 def mover_pieza(pos_actual, tecla, ocupados):
-    """Permite moverse a nodos conectados según dirección de tecla (ahora flechas funcionan bien)."""
+    """Permite moverse a nodos conectados según dirección de tecla."""
 
     # En la versión automatizada, esta función podría recibir un parámetro
     # "accion" generado por un algoritmo (por ejemplo, el próximo nodo a visitar)
@@ -122,8 +122,6 @@ def mover_pieza(pos_actual, tecla, ocupados):
     destino = pos_actual
 
     for v in conexiones[pos_actual]:
-        if v in ocupados:
-            continue
         x1, y1 = nodos[v]
         dx_, dy_ = x1 - x0, y1 - y0
 
@@ -175,7 +173,7 @@ while True:
             if event.key == pygame.K_ESCAPE:
                 pygame.quit(); sys.exit()
 
-            # IA: aquí se reemplazan las decisiones humanas por inteligencia artificial
+            # aquí se reemplazan las decisiones humanas por inteligencia artificial
             if not (game_over or victoria):
                 if turno == "raton":
                     pos_raton = mover_pieza(pos_raton, event.key, [pos_gato])
@@ -190,7 +188,7 @@ while True:
     if not game_over and not victoria:
         # Si el gato atrapa al ratón
         if pos_gato == pos_raton:
-            cartel("🐱 ¡GAME OVER! El gato atrapó al ratón.")
+            cartel("¡GAME OVER! El gato atrapó al ratón.")
             pos_gato, pos_raton, turno = 1, 0, "raton"
             tiene_queso = False
             game_over = True
