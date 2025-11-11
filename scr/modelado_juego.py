@@ -1,11 +1,10 @@
 import sys
 import random
 import pygame
-from config_small import *
+from config_small import * # Modificar para cambiar de tablero
 
-# -----------------------------------------
-# ESTADO INICIAL DEL JUEGO
-# -----------------------------------------
+
+# Estado Inicial del Juego
 nodos_ids = list(nodos.keys())
 pos_raton = random.choice(nodos_ids)
 pos_gato = random.choice([n for n in nodos_ids if n != pos_raton])
@@ -19,9 +18,8 @@ game_over = False
 victoria = False
 
 
-# -----------------------------------------
-# BUCLE PRINCIPAL
-# -----------------------------------------
+
+# Bucle Principal
 while True:
     RELOJ.tick(FPS)
 
@@ -40,9 +38,8 @@ while True:
                     pos_gato = mover_pieza(pos_gato, event.key, nodos, conexiones)
                     turno = "raton"
 
-    # --------------------------
-    # LÓGICA DEL JUEGO
-    # --------------------------
+    
+    # Lógica del Juego
     if not game_over and not victoria:
         if pos_gato == pos_raton:
             cartel("¡GAME OVER! El gato atrapó al ratón.")
@@ -55,9 +52,8 @@ while True:
             cartel("¡Ganaste! El ratón llegó con el queso ", (200, 255, 200))
             victoria = True
 
-    # --------------------------
-    # DIBUJADO
-    # --------------------------
+  
+    # Dibujo del Juego
     dibujar_tablero(VENTANA, nodos, aristas, inicio, final, tiene_queso, queso)
     dibujar_piezas(VENTANA, nodos, pos_gato, pos_raton)
 

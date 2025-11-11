@@ -1,9 +1,8 @@
 import pygame
 import random
 
-# -----------------------------------------------------
-# CONFIGURACIÓN INICIAL
-# -----------------------------------------------------
+
+# Configuración General de Pygame
 pygame.init()
 ANCHO, ALTO = 1200, 800
 VENTANA = pygame.display.set_mode((ANCHO, ALTO))
@@ -18,9 +17,7 @@ COLOR_INICIO = (120, 220, 120)
 COLOR_FINAL = (250, 150, 150)
 FUENTE = pygame.font.SysFont("arial", 22)
 
-# -----------------------------------------------------
-# IMÁGENES
-# -----------------------------------------------------
+# Imágenes de las piezas
 img_gato = pygame.image.load("./assets/gato.png")
 img_raton = pygame.image.load("./assets/ratón.png")
 img_queso = pygame.image.load("./assets/queso.png")
@@ -31,9 +28,7 @@ img_raton = pygame.transform.smoothscale(img_raton, (int(250*ESCALA), int(250*ES
 img_queso = pygame.transform.smoothscale(img_queso, (int(200*ESCALA), int(200*ESCALA)))
 
 
-# -----------------------------------------------------
-# TABLERO 25 NODOS – ESTRUCTURA MÁS GRANDE Y CONECTADA
-# -----------------------------------------------------
+# Tablero Grande: 25 nodos en una malla cuadrada con diagonales
 x0, y0 = 150, 150
 dx, dy = 100, 100
 
@@ -64,9 +59,8 @@ for i in range(25):
 aristas = {tuple(sorted((i, j))) for i, vs in conexiones.items() for j in vs}
 
 
-# -----------------------------------------------------
-# FUNCIONES DE DIBUJO Y UTILIDAD
-# -----------------------------------------------------
+
+# Funciones de Dibujo
 def dibujar_tablero(VENTANA, nodos, aristas, inicio, final, tiene_queso, queso):
     VENTANA.fill(COLOR_FONDO)
     for (i, j) in aristas:
