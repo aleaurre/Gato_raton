@@ -1,8 +1,13 @@
 import sys
 import random
 import pygame
-from config_small import * # Modificar para cambiar de tablero
+from scr.config_small import *  # Modificar para cambiar de tablero
+from scr.alg_astar import gato_move_astar
 
+TECLAS_VALIDAS = {
+    pygame.K_UP, pygame.K_DOWN, pygame.K_LEFT, pygame.K_RIGHT,
+    pygame.K_q, pygame.K_e, pygame.K_z, pygame.K_c
+}
 
 # Estado Inicial del Juego
 nodos_ids = list(nodos.keys())
@@ -18,7 +23,6 @@ game_over = False
 victoria = False
 
 
-
 # Bucle Principal
 while True:
     RELOJ.tick(FPS)
@@ -32,13 +36,17 @@ while True:
 
             if not (game_over or victoria):
                 if turno == "raton":
-                    pos_raton = mover_pieza(pos_raton, event.key, nodos, conexiones)
-                    turno = "gato"
-                else:
-                    pos_gato = mover_pieza(pos_gato, event.key, nodos, conexiones)
-                    turno = "raton"
+                    if event.key in TECLAS_VALIDAS:
+                        pos_raton = mover_pieza(pos_raton, event.key, nodos, conexiones)
+                        turno = "gato"
 
-    
+
+    # Movimiento automático del gato usando A*
+    if not game_over and not victoria and turno == "gato":
+        pos_gato = gato_move_astar(conexiones, nodos, pos_gato, pos_raton)
+        turno = "raton"
+
+
     # Lógica del Juego
     if not game_over and not victoria:
         if pos_gato == pos_raton:
@@ -81,4 +89,3 @@ while True:
         victoria = False
         turno = "raton"
         inicio = pos_raton
-        
