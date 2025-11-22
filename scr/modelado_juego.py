@@ -3,6 +3,9 @@ import random
 import pygame
 from scr.config_small import *  # Modificar para cambiar de tablero
 from scr.alg_astar import gato_move_astar
+from scr.alg_minimax import gato_move_minimax
+
+MODO_GATO = "astar"   # opciones: "astar" o "minimax"
 
 TECLAS_VALIDAS = {
     pygame.K_UP, pygame.K_DOWN, pygame.K_LEFT, pygame.K_RIGHT,
@@ -41,9 +44,12 @@ while True:
                         turno = "gato"
 
 
-    # Movimiento automático del gato usando A*
+    # Movimiento automático del gato (A* o Minimax según modo)
     if not game_over and not victoria and turno == "gato":
-        pos_gato = gato_move_astar(conexiones, nodos, pos_gato, pos_raton)
+        if MODO_GATO == "astar":
+            pos_gato = gato_move_astar(conexiones, nodos, pos_gato, pos_raton)
+        else:
+            pos_gato = gato_move_minimax(conexiones, nodos, pos_gato, pos_raton)
         turno = "raton"
 
 
