@@ -1,4 +1,9 @@
+# scr/alg_astar.py
+
 from heapq import heappush, heappop
+
+
+# Heurística y A* genérico
 
 def heuristica(nodos_pos, a, b):
     """
@@ -8,18 +13,26 @@ def heuristica(nodos_pos, a, b):
     (x2, y2) = nodos_pos[b]
     return abs(x1 - x2) + abs(y1 - y2)
 
+
 def a_star(conexiones, nodos_pos, inicio, objetivo, ocupados=None):
     """
     A* clásico en grafo no ponderado.
     - conexiones: dict nodo -> lista de vecinos
     - nodos_pos: dict nodo -> (x,y)
     - inicio, objetivo: nodos
-    - ocupados: lista de nodos que no se pueden pisar
+    - ocupados: colección de nodos que NO se pueden pisar,
+      excepto el objetivo (lo permitimos para poder capturar / llegar).
 
     Devuelve lista de nodos [inicio, ..., objetivo] o [] si no hay camino.
     """
     if ocupados is None:
-        ocupados = []
+        ocupados = set()
+    else:
+        ocupados = set(ocupados)
+
+    # Nunca bloquear el objetivo:
+    if objetivo in ocupados:
+        ocupados.remove(objetivo)
 
     if inicio == objetivo:
         return [inicio]
@@ -59,14 +72,69 @@ def a_star(conexiones, nodos_pos, inicio, objetivo, ocupados=None):
 
     return []  # no hay camino
 
+
+# Movimiento genérico usando A* hacia un objetivo
+
+def agent_move_astar_to_target(conexiones, nodos_pos,
+                               pos_agente, objetivo,
+                               ocupados=None):
+    """
+    Devuelve el SIGUIENTE movimiento de un agente hacia 'objetivo'
+    usando A*.
+
+    - ocupados: nodos que el agente NO puede pisar (obstáculos, oponente, etc.),
+      pero el 'objetivo' nunca se bloquea.
+    """
+    camino = a_star(conexiones, nodos_pos, pos_agente, objetivo, ocupados=ocupados)
+
+    if len(camino) < 2:
+        # No hay camino útil o ya está en el objetivo
+        return pos_agente
+
+    # Siguiente nodo del camino
+    return camino[1]
+
+
+# Movimiento del GATO con A*
+
 def gato_move_astar(conexiones, nodos_pos, pos_gato, pos_raton):
     """
-    Devuelve el SIGUIENTE movimiento del gato usando A*.
-    No bloqueamos al ratón como ocupado porque es el objetivo.
+    Movimiento del gato usando A*.
+    Objetivo: el ratón.
+    No bloqueamos al ratón como 'ocupado' porque es justamente el objetivo.
     """
-    camino = a_star(conexiones, nodos_pos, pos_gato, pos_raton, ocupados=[])
-    
-    if len(camino) < 2:
-        return pos_gato
-    
-    return camino[1]
+    return agent_move_astar_to_target(
+        conexiones,
+        nodos_pos,
+        pos_agente=pos_gato,
+        objetivo=pos_raton,
+        ocupados=[]  # puede pisar al ratón para capturarlo
+    )
+
+
+# Movimiento del RATÓN con A*
+
+def raton_move_astar(conexiones, nodos_pos,
+                     pos_gato, pos_raton,
+                     queso, meta, tiene_queso):
+    """
+    Movimiento del ratón usando A*.
+
+    - Si NO tiene queso: objetivo = queso.
+    - Si YA tiene queso: objetivo = meta.
+
+    En ambos casos, el ratón intenta evitar pisar al gato,
+    por lo que el gato se pasa en 'ocupados'.
+    """
+    if not tiene_queso:
+        objetivo = queso
+    else:
+        objetivo = meta
+
+    return agent_move_astar_to_target(
+        conexiones,
+        nodos_pos,
+        pos_agente=pos_raton,
+        objetivo=objetivo,
+        ocupados={pos_gato}  # evitamos pisar al gato
+    )

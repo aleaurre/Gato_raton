@@ -4,128 +4,184 @@ from math import inf
 from scr.alg_entrenamiento import bfs_dist
 
 
+# Funciones auxiliares
+
 def vecinos_legales(conexiones, pos, ocupados=None):
     """
-    Vecinos del nodo 'pos' excluyendo los nodos en 'ocupados'.
-    Si no hay vecinos válidos, el agente se queda donde está.
+    Devuelve vecinos evitando nodos en 'ocupados'.
+    Si no hay vecinos válidos, se queda en su lugar.
     """
     if ocupados is None:
         ocupados = set()
-    return [v for v in conexiones[pos] if v not in ocupados] or [pos]
+    vecinos = [v for v in conexiones[pos] if v not in ocupados]
+    return vecinos if vecinos else [pos]
 
 
-def evaluar_estado(conexiones, pos_gato, pos_raton):
+# Función de evaluación generalizada
+
+def evaluar_estado_general(conexiones, pos_gato, pos_raton, max_agent):
     """
-    Función de evaluación para Minimax.
-    Valores grandes => buenos para el gato.
-    Criterio simple:
-      - Si el gato atrapó al ratón: valor altísimo
-      - Si no, cuanto más cerca esté el gato, mejor.
+    Evalúa un estado dependiendo de quién sea MAX.
+    
+    max_agent = 'gato'  → el gato quiere atrapar al ratón.
+    max_agent = 'raton' → el ratón quiere alejarse del gato y acercarse a queso/meta.
+    
+    NOTA: en esta versión no incluimos queso/meta (porque depende del motor),
+    pero dejamos el hook preparado por si lo quieren ampliar.
     """
+
+    # Caso terminal: captura
     if pos_gato == pos_raton:
-        return 10_000  # estado terminal: captura
+        if max_agent == "gato":
+            return +10_000   # excelente para el gato
+        else:
+            return -10_000   # pésimo para el ratón
 
+    # Distancia gato-ratón
     d = bfs_dist(conexiones, pos_gato, pos_raton)
+
     if d is None:
-        # Si no hay camino, penalizamos fuerte (el gato está perdido)
-        return -10_000
+        # Si no hay camino: posición horrible para el gato
+        # pero muy buena para el ratón
+        return -10_000 if max_agent == "gato" else +10_000
 
-    # Mientras más chico d, mejor para el gato.
-    # Usamos el negativo para que d chico => valor grande.
-    return -d
+    # max_agent = gato → quiere d chica (acercarse)
+    # max_agent = raton → quiere d grande (alejarse)
+    if max_agent == "gato":
+        return -d  # d chica → valor grande
+    else:
+        return +d  # d grande → valor grande
 
 
-def minimax(conexiones, pos_gato, pos_raton, profundidad, es_turno_gato,
-            alpha=-inf, beta=inf):
+# Minimax generalizado con poda alfa–beta
+
+def minimax_gen(conexiones,
+                pos_gato,
+                pos_raton,
+                profundidad,
+                turno_agente,
+                max_agent,
+                alpha=-inf,
+                beta=inf):
     """
-    Minimax con poda alfa-beta.
-    - conexiones: grafo (dict nodo -> lista de vecinos)
-    - pos_gato, pos_raton: posiciones actuales
-    - profundidad: profundidad máxima del árbol
-    - es_turno_gato: True si juega el gato (MAX), False si juega el ratón (MIN)
+    minimax_gen → versión generalizada.
+
+    Parámetros:
+    - turno_agente : 'gato' o 'raton' (quién mueve ahora)
+    - max_agent    : 'gato' o 'raton' (quién es el jugador MAX)
     """
 
-    # Estado terminal: gato atrapa
+    # Caso terminal: captura
     if pos_gato == pos_raton:
-        return evaluar_estado(conexiones, pos_gato, pos_raton), pos_gato
+        valor = evaluar_estado_general(conexiones, pos_gato, pos_raton, max_agent)
+        return valor, pos_gato if turno_agente == "gato" else pos_raton
 
-    # O alcanzamos la profundidad máxima
+    # Profundidad límite
     if profundidad == 0:
-        return evaluar_estado(conexiones, pos_gato, pos_raton), pos_gato
+        valor = evaluar_estado_general(conexiones, pos_gato, pos_raton, max_agent)
+        return valor, pos_gato if turno_agente == "gato" else pos_raton
 
-    if es_turno_gato:
-        # MAX: el gato quiere maximizar la evaluación
-        mejor_valor = -inf
+    # ¿Quién es MAX y quién es MIN?
+    es_max = (turno_agente == max_agent)
+
+    # Turno del gato
+    if turno_agente == "gato":
+        mejor_val = -inf if es_max else inf
         mejor_mov = pos_gato
 
-        # El gato puede moverse a cualquier vecino (incluyendo el ratón = captura)
-        for siguiente in vecinos_legales(conexiones, pos_gato):
-            valor, _ = minimax(
+        for mov in vecinos_legales(conexiones, pos_gato, ocupados={pos_raton}):
+            val, _ = minimax_gen(
                 conexiones,
-                pos_gato=siguiente,
+                pos_gato=mov,
                 pos_raton=pos_raton,
                 profundidad=profundidad - 1,
-                es_turno_gato=False,
+                turno_agente="raton",
+                max_agent=max_agent,
                 alpha=alpha,
                 beta=beta
             )
 
-            if valor > mejor_valor:
-                mejor_valor = valor
-                mejor_mov = siguiente
+            if es_max:
+                if val > mejor_val:
+                    mejor_val = val
+                    mejor_mov = mov
+                alpha = max(alpha, mejor_val)
+            else:
+                if val < mejor_val:
+                    mejor_val = val
+                    mejor_mov = mov
+                beta = min(beta, mejor_val)
 
-            alpha = max(alpha, mejor_valor)
             if beta <= alpha:
-                break  # poda beta
+                break  # poda
 
-        return mejor_valor, mejor_mov
+        return mejor_val, mejor_mov
 
-    else:
-        # MIN: el ratón quiere minimizar la evaluación (escapar del gato)
-        peor_valor = inf
-        peor_mov = pos_raton
+    # Turno del ratón
+    else:  # turno_agente == "raton"
+        mejor_val = -inf if es_max else inf
+        mejor_mov = pos_raton
 
-        # El ratón intenta no pisar el nodo del gato
-        for siguiente in vecinos_legales(conexiones, pos_raton, ocupados={pos_gato}):
-            valor, _ = minimax(
+        for mov in vecinos_legales(conexiones, pos_raton, ocupados={pos_gato}):
+            val, _ = minimax_gen(
                 conexiones,
                 pos_gato=pos_gato,
-                pos_raton=siguiente,
+                pos_raton=mov,
                 profundidad=profundidad - 1,
-                es_turno_gato=True,
+                turno_agente="gato",
+                max_agent=max_agent,
                 alpha=alpha,
                 beta=beta
             )
 
-            if valor < peor_valor:
-                peor_valor = valor
-                peor_mov = siguiente
+            if es_max:
+                if val > mejor_val:
+                    mejor_val = val
+                    mejor_mov = mov
+                alpha = max(alpha, mejor_val)
+            else:
+                if val < mejor_val:
+                    mejor_val = val
+                    mejor_mov = mov
+                beta = min(beta, mejor_val)
 
-            beta = min(beta, peor_valor)
             if beta <= alpha:
-                break  # poda alfa
+                break  # poda
 
-        return peor_valor, peor_mov
+        return mejor_val, mejor_mov
 
+
+# Interfaces públicas para movimiento del gato o del ratón
 
 def gato_move_minimax(conexiones, nodos_pos, pos_gato, pos_raton, profundidad=3):
     """
-    Decide el movimiento del gato usando Minimax con poda alfa-beta.
-    - conexiones: grafo
-    - nodos_pos: no lo usamos por ahora, pero lo dejamos para compatibilidad con A*
-    - pos_gato: posición actual del gato
-    - pos_raton: posición actual del ratón
-    - profundidad: profundidad de búsqueda (2–3 está bien para 11 nodos)
+    Movimiento del gato usando Minimax:
+    - El gato es MAX
+    - El ratón es MIN
     """
-    # Si ya está sobre el ratón, no hace falta moverse
-    if pos_gato == pos_raton:
-        return pos_gato
-
-    _, mejor_mov = minimax(
+    _, mov = minimax_gen(
         conexiones,
         pos_gato=pos_gato,
         pos_raton=pos_raton,
         profundidad=profundidad,
-        es_turno_gato=True
+        turno_agente="gato",
+        max_agent="gato"
     )
-    return mejor_mov
+    return mov
+
+
+def raton_move_minimax(conexiones, nodos_pos, pos_gato, pos_raton, profundidad=3):
+    """
+    Movimiento del ratón usando Minimax:
+    - El ratón es MAX
+    - El gato es MIN
+    """
+    _, mov = minimax_gen(
+        conexiones,
+        pos_gato=pos_gato,
+        pos_raton=pos_raton,
+        profundidad=profundidad,
+        turno_agente="raton",
+        max_agent="raton"
+    )
+    return mov
