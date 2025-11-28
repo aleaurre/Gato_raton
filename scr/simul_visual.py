@@ -10,9 +10,9 @@ from scr.config_small import conexiones, nodos, aristas, VENTANA, RELOJ, FPS, \
     dibujar_tablero, dibujar_piezas, cartel, mostrar_texto
 
 # Algoritmos
-from scr.alg_astar import gato_move_astar, raton_move_astar
-from scr.alg_minimax import gato_move_minimax, raton_move_minimax
-from scr.alg_random import gato_move_random, raton_move_random
+from scr.alg.alg_astar import gato_move_astar, raton_move_astar
+from scr.alg.alg_minimax import gato_move_minimax, raton_move_minimax
+from scr.alg.alg_random import gato_move_random, raton_move_random
 
 
 # ==================== CONFIGURAR ALGORITMOS ====================

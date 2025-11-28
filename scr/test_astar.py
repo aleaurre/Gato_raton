@@ -1,5 +1,5 @@
 from config_small import conexiones, nodos
-from alg_astar import a_star, gato_move_astar
+from scr.alg.alg_astar import a_star, gato_move_astar
 
 print("Ejecutando test_astar...")
 
