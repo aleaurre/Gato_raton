@@ -1,53 +1,139 @@
-# 🐭 Gato y Ratón – Simulación Interactiva
+# 🐭🐱 Gato y Ratón — Búsqueda y Optimización en Grafos
 
-Este proyecto implementa un **juego y simulación entre un gato y un ratón** sobre un tablero de nodos, con elementos como **queso, meta final y condiciones de colisión**.  
-El objetivo es modelar comportamientos de agentes (ratón y gato) en distintos escenarios y posteriormente **automatizar las decisiones mediante algoritmos de búsqueda o aprendizaje**.
-Justificación Teórica en: https://docs.google.com/document/d/1ps7sCIekX5k8wyKlOz_qVr1m89aT8EcIQt9Zv6oxTkM/edit?usp=sharing
+Proyecto desarrollado para experimentar y comparar algoritmos de búsqueda y optimización en un entorno adversarial.
+El juego simula la interacción entre un **ratón** que busca llegar con el queso a la meta, mientras un **gato** intenta atraparlo.
 
 ---
 
-## 📁 Estructura del proyecto
+## 🎯 Objetivos
+
+* Modelar el mapa como un grafo
+* Implementar agentes autónomos con distintos algoritmos:
+  * **Búsqueda A*** (heurística Manhattan)
+  * **Minimax con poda Alfa-Beta**
+  * **Estrategias estocásticas Random**
+* Analizar el desempeño de cada estrategia.
+* Visualizar la simulación en una interfaz gráfica interactiva.
+
+---
+
+## 🧩 Estructura del proyecto
 
 GATO_RATÓN/
-├── assets/                # Imágenes utilizadas en el juego
+│
+├── assets/              # Imágenes de las piezas
 │   ├── gato.png
-│   ├── ratón.png
-│   └── queso.png
+│   ├── queso.png
+│   └── ratón.png
 │
-├── docs/                  # Documentos teóricos y definiciones
-│   ├── Def_Entrenamiento.pdf
-│   └── Def_Problema.pdf
+├── docs/                # Documentación del problema
 │
-├── scr/                   # Scripts principales del modelo y experimentos
-│   ├── alg_entrenamiento.py   # Algoritmos de simulación
-│   ├── alg_estudio.py         # Análisis y pruebas
-│   ├── config_big.py          # Configuración de tableros grandes
-│   ├── config_small.py        # Configuración de tableros pequeños
-│   └── modelado_juego.py      # Lógica del entorno y entidades
+├── scr/                 # Código fuente del proyecto
+│   ├── alg/             # Algoritmos de movimiento
+│   │   ├── alg_astar.py
+│   │   ├── alg_minimax.py
+│   │   ├── alg_random.py
+│   │   ├── alg_estudio.py
+│   │   └── alg_entrenamiento.py
+│   │
+│   ├── config_small.py  # Mapa pequeño (11 nodos)
+│   ├── config_big.py    # Mapa grande (25 nodos)
+│   ├── modelado_juego.py # Motor gráfico base
+│   ├── simul_visual.py  # Simulación automática con visualización (Pygame)
+│   ├── experimentos.py  # Simulación sin interfaz para análisis estadístico
+│   └── test_astar.py    # Prueba básica del algoritmo A*
 │
-├── main.py                # Punto de entrada del juego/simulación
-├── requirements.txt       # Dependencias necesarias
-└── readme.md              # Descripción general del proyecto
+├── main.py              # 🧪 Script para ejecutar una partida visual (puede ser manual/automática)
+├── requirements.txt     # Dependencias del proyecto
+└── README.md            # Este archivo 🙂
 
 ---
 
-## 🚀 Ejecución
+## 🚀 Instalación
 
-1. Instalar dependencias:
-   ```bash
-   pip install -r requirements.txt
-    ````
+1️⃣ Crear entorno virtual (opcional pero recomendado)
 
-2. Ejecutar el juego principal:
-   ```bash
-   python main.py
-   ```
+```bash
+python -m venv .venv
+```
+
+2️⃣ Activar entorno
+
+```bash
+# Windows (PowerShell)
+.venv\Scripts\Activate.ps1
+
+# Linux / MacOS
+source .venv/bin/activate
+```
+
+3️⃣ Instalar dependencias
+
+```bash
+pip install -r requirements.txt
+```
 
 ---
 
-## 🧠 Créditos
+## ▶ Ejecución de la simulación
 
-Estudiantes universitarios de la carrera de grado de Ing. en Inteligencia Artificial y Ciencia de Datos.
-Alexia Aurrecochea, Mercedes Barrutia, Sofía Craigdallie y Paula Blasco.
+### 🔹 Visual + automática (recomendado)
+
+```bash
+python -m scr.simul_visual
+```
+
+💡 Podés cambiar los algoritmos dentro del archivo:
+
+```python
+MODO_GATO = "minimax"   # opciones: astar | minimax | random
+MODO_RATON = "astar"    # opciones: astar | minimax | random
+```
+
+También es posible usar:
+
+```python
+from scr.config_big import ...
+```
+
+para el tablero grande 🗺️
+
+---
+
+### 🔹 Modo estadístico (sin visual)
+
+```bash
+python -m scr.experimentos
+```
+
+Este modo imprime en consola el desempeño de los algoritmos.
+
+---
+
+### 🔹 Prueba mínima del A*
+
+```bash
+python -m scr.test_astar
+```
+
+---
+
+## 🧠 Algoritmos implementados
+
+| Algoritmo                | Agente       | Descripción                                             |
+| ------------------------ | ------------ | ------------------------------------------------------- |
+| A*                       | Gato / Ratón | Persigue objetivos en el grafo minimizando distancia    |
+| Minimax + Alfa-Beta      | Gato / Ratón | Estrategia adversarial basada en juegos con dos agentes |
+| Movimiento Random        | Gato / Ratón | Exploración estocástica para evitar ciclos o atascos    |
+| Entrenamiento heurístico | Ratón        | Ajuste por grid-search de pesos de heurística           |
+| BFS auxiliar             | Ambos        | Para calcular distancias reales en análisis             |
+
+---
+
+## 👩‍🔬 Créditos
+
+**Alexia Aurrecochea, Mercedes Barrutia, Sofía Craigdallie y Paula Blasco.**
+Estudiantes de Ingeniería en Inteligencia Artificial y Ciencia de Datos
+Universidad Católica del Uruguay
 En el marco del curso de Algoritmos Avanzados de Búsqueda y Optimización.
-Dictado por los docentes: Ing.Michel Pedrera e Ing.Pío Dos Santos
+Supervisión: [📝 Ing.Michel Pedrera e Ing.Pío Dos Santos]
