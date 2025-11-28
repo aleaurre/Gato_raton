@@ -67,22 +67,22 @@ def ejecutar_partida(max_pasos=100):
 
         # Captura
         if pos_gato == pos_raton:
-            print("❌ ¡El gato atrapó al ratón! GAME OVER")
+            print("¡El gato atrapó al ratón! GAME OVER")
             return
 
         # Ratón toma el queso
         if pos_raton == queso and not tiene_queso:
             tiene_queso = True
-            print("🧀 El ratón consiguió el queso!")
+            print("El ratón consiguió el queso!")
 
         # Ratón gana
         if pos_raton == final and tiene_queso:
-            print("🏁 ¡El ratón llegó a la meta con el queso! VICTORIA")
+            print("¡El ratón llegó a la meta con el queso! VICTORIA")
             return
 
         sleep(0.6)
 
-    print("⏳ Se acabaron los pasos → Empate")
+    print("Se acabaron los pasos → Empate")
 
 
 if __name__ == "__main__":
