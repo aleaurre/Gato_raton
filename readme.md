@@ -3,6 +3,8 @@
 Proyecto desarrollado para experimentar y comparar algoritmos de búsqueda y optimización en un entorno adversarial.
 El juego simula la interacción entre un **ratón** que busca llegar con el queso a la meta, mientras un **gato** intenta atraparlo.
 
+Los resultados del proyecto pueden visualizarse en el documento resultados.ipynb.
+
 ---
 
 ## 🎯 Objetivos
@@ -43,9 +45,10 @@ GATO_RATÓN/
 │   ├── experimentos.py  # Simulación sin interfaz para análisis estadístico
 │   └── test_astar.py    # Prueba básica del algoritmo A*
 │
-├── main.py              # 🧪 Script para ejecutar una partida visual (puede ser manual/automática)
+├── main.py              # Script para ejecutar una partida visual (puede ser manual/automática)
 ├── requirements.txt     # Dependencias del proyecto
-└── README.md            # Este archivo 🙂
+├── resultados.ipynb     # Registro de resultados finales del Proyecto
+└── README.md            # Este archivo
 
 ---
 
@@ -77,7 +80,7 @@ pip install -r requirements.txt
 
 ## ▶ Ejecución de la simulación
 
-### 🔹 Visual + automática (recomendado)
+### Visual + automática (recomendado)
 
 ```bash
 python -m scr.simul_visual
@@ -100,7 +103,7 @@ para el tablero grande 🗺️
 
 ---
 
-### 🔹 Modo estadístico (sin visual)
+### Modo estadístico (sin visual)
 
 ```bash
 python -m scr.experimentos
@@ -110,7 +113,7 @@ Este modo imprime en consola el desempeño de los algoritmos.
 
 ---
 
-### 🔹 Prueba mínima del A*
+### Prueba mínima del A*
 
 ```bash
 python -m scr.test_astar
