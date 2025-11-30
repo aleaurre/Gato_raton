@@ -30,6 +30,12 @@ GATO_RATÓN/
 │
 ├── docs/                # Documentación del problema
 │
+├── resultados/                          # csv de registros de resultados
+│   ├── resultados_detalle.csv
+│   ├── resultados_pairings_resumen.csv
+│   ├── resultados_partidas_detalle.csv
+│   └── resultados_partidas_resumen.csv
+│
 ├── scr/                 # Código fuente del proyecto
 │   ├── alg/             # Algoritmos de movimiento
 │   │   ├── alg_astar.py
