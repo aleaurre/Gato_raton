@@ -1,0 +1,10 @@
+pair,tasa_gato,tasa_raton,tasa_empate,pasos_prom,dur_prom
+G_astar vs R_astar,0.85,0.15,0.0,2.8,8.654096745885909e-06
+G_astar vs R_minmax,0.9,0.1,0.0,3.6,9.521470346953719e-05
+G_astar vs R_random,1.0,0.0,0.0,4.1,9.066908387467264e-06
+G_minmax vs R_astar,0.25,0.75,0.0,6.3,0.00014638754655607044
+G_minmax vs R_minmax,0.0,0.05,0.95,190.35,0.0061866896488936615
+G_minmax vs R_random,0.0,1.0,0.0,53.6,0.0013833040982717648
+G_random vs R_astar,0.2,0.8,0.0,5.9,1.372295373585075e-05
+G_random vs R_minmax,0.0,0.3,0.7,144.3,0.0030597519624279814
+G_random vs R_random,0.0,1.0,0.0,62.4,4.794174747075885e-05
