@@ -1,7 +1,7 @@
 # scr/alg_random.py
 
 import random
-from scr.alg.alg_entrenamiento import bfs_dist  # no es necesario pero lo dejamos por consistencia
+from scr.alg.funcs_base import bfs_dist  # no es necesario pero lo dejamos por consistencia
 
 
 def vecinos_legales(conexiones, pos, ocupados=None):

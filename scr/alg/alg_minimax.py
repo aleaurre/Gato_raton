@@ -1,7 +1,7 @@
 # scr/alg_minimax.py
 
 from math import inf
-from scr.alg.alg_entrenamiento import bfs_dist
+from scr.alg.funcs_base import bfs_dist
 
 
 # Funciones auxiliares
