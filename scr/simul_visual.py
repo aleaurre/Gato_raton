@@ -81,7 +81,7 @@ def iniciar_simulacion():
         if pos_raton == queso and not tiene_queso:
             tiene_queso = True
 
-        if pos_raton == final and tiene_queso:
+        if pos_raton == final and tiene_queso and pos_raton != pos_gato:
             cartel("¡El ratón ganó!", (200, 255, 200))
             terminado = True
 

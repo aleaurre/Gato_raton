@@ -76,7 +76,7 @@ def ejecutar_partida(max_pasos=100):
             print("El ratón consiguió el queso!")
 
         # Ratón gana
-        if pos_raton == final and tiene_queso:
+        if pos_raton == final and tiene_queso and pos_gato != pos_raton:
             print("¡El ratón llegó a la meta con el queso! VICTORIA")
             return
 
