@@ -1,19 +1,19 @@
 import pygame
 import random
-
-# Configuración General de Pygame
 pygame.init()
+
 ANCHO, ALTO = 900, 600
 VENTANA = pygame.display.set_mode((ANCHO, ALTO))
 pygame.display.set_caption("Gato y Ratón – Tablero 11 nodos con queso y meta oculta")
 
 FPS = 60
 RELOJ = pygame.time.Clock()
-COLOR_FONDO = (245, 240, 230)
-COLOR_LINEAS = (40, 40, 40)
-COLOR_NODO = (180, 180, 180)
-COLOR_INICIO = (120, 220, 120)
-COLOR_FINAL = (250, 150, 150)
+
+COLOR_FONDO = (175, 195, 120)
+COLOR_LINEAS = (80, 50, 20)
+COLOR_NODO = (130, 100, 70)
+COLOR_INICIO = (100, 150, 70)
+COLOR_FINAL = (200, 180, 60)
 FUENTE = pygame.font.SysFont("arial", 22)
 
 

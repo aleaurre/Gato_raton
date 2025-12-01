@@ -99,7 +99,7 @@ while True:
             tiene_queso = True
 
         # Ratón gana
-        if pos_raton == final and tiene_queso:
+        if pos_raton == final and tiene_queso and pos_gato != pos_raton:
             cartel("¡Ganaste! El ratón llegó con el queso", (200, 255, 200))
             victoria = True
 
