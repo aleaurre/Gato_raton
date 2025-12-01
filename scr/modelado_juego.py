@@ -12,7 +12,6 @@ from scr.alg.alg_random import gato_move_random, raton_move_random
 
 
 # MODO DE DECISIÓN DE LOS AGENTES
-
 # Opciones: "astar", "minimax", "random"
 MODO_GATO  = "minimax"
 MODO_RATON = "astar"
